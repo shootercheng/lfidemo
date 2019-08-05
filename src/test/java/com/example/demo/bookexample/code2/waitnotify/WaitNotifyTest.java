@@ -33,7 +33,7 @@ public class WaitNotifyTest {
 
             synchronized (object){
                 System.out.println(System.currentTimeMillis() + " T2 start");
-                System.out.println(System.currentTimeMillis() + " T2 wait for object");
+                System.out.println(System.currentTimeMillis() + " T2 notify on thread");
                 object.notify();
                 System.out.println(System.currentTimeMillis() + " T2 end");
                 try {

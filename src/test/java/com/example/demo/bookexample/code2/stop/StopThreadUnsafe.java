@@ -1,5 +1,8 @@
 package com.example.demo.bookexample.code2.stop;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.UUID;
 
 /**
@@ -8,9 +11,15 @@ import java.util.UUID;
  */
 public class StopThreadUnsafe {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(StopThreadUnsafe.class);
+
     private static User u = new User();
 
     private static class ChangeObjectThread extends Thread {
+
+        public ChangeObjectThread(String name){
+            super.setName(name);
+        }
 
         @Override
         public void run(){
@@ -31,6 +40,10 @@ public class StopThreadUnsafe {
     }
 
     private static class SafeStopChangeObjectThread extends Thread {
+
+        public SafeStopChangeObjectThread(String name){
+            super.setName(name);
+        }
 
         volatile boolean stop = false;
 
@@ -61,6 +74,10 @@ public class StopThreadUnsafe {
 
     private static class ReadObjectThread extends Thread {
 
+        public ReadObjectThread(String name){
+            super.setName(name);
+        }
+
         @Override
         public void run(){
             while (true){
@@ -74,14 +91,16 @@ public class StopThreadUnsafe {
     }
 
     public static void main(String[] args) throws Exception {
-        new ReadObjectThread().start();
+        LOGGER.info("waiting jconsole connect~~~");
+        Thread.sleep(20000);
+        new ReadObjectThread("read object thread").start();
         while (true) {
-//            ChangeObjectThread changeObjectThread = new ChangeObjectThread();
-            SafeStopChangeObjectThread changeObjectThread = new SafeStopChangeObjectThread();
+            ChangeObjectThread changeObjectThread = new ChangeObjectThread("change object thread");
+//            SafeStopChangeObjectThread changeObjectThread = new SafeStopChangeObjectThread("safe change thread obj");
             changeObjectThread.start();
             Thread.sleep(100);
-//            changeObjectThread.stop();
-            changeObjectThread.stopThread();
+            changeObjectThread.stop();
+//            changeObjectThread.stopThread();
         }
     }
 }

@@ -14,7 +14,11 @@ public class JoinTest {
 
         @Override
         public void run(){
-            for (i = 0; i < 1000; i++);
+            for (i = 0; i < 1000000000; i++);
+            // It is rarely appropriate to use this method. It may be useful
+            // for debugging or testing purposes, where it may help to reproduce
+            // bugs due to race conditions.
+            Thread.yield();
         }
     }
 
@@ -30,6 +34,15 @@ public class JoinTest {
         AddThread addThread = new AddThread();
         addThread.start();
         addThread.join();
+        System.out.println(i);
+    }
+
+    @Test
+    public void testThreadJoinWithTm() throws Exception{
+        AddThread addThread = new AddThread();
+        addThread.start();
+        // addThread wait 4
+        addThread.join(4);
         System.out.println(i);
     }
 }

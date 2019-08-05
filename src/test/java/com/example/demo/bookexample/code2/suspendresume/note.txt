@@ -1,0 +1,120 @@
+How to use jstack
+
+C:\Users\chengdu>tasklist|findstr java
+java.exe                    175812 Console                    4      4,672 K
+java.exe                    223888 Console                    4    107,116 K
+java.exe                    223904 Console                    4     25,416 K
+
+C:\Users\chengdu>jstack 223904
+2019-08-05 21:49:39
+Full thread dump Java HotSpot(TM) 64-Bit Server VM (25.77-b03 mixed mode):
+
+"DestroyJavaVM" #13 prio=5 os_prio=0 tid=0x0000000019fe5000 nid=0x36b28 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"---------t2" #12 prio=5 os_prio=0 tid=0x0000000019fe8800 nid=0x36c34 runnable [0x000000001a97f000]
+   java.lang.Thread.State: RUNNABLE
+        at java.lang.Thread.suspend0(Native Method)
+        at java.lang.Thread.suspend(Thread.java:1029)
+        at com.example.demo.bookexample.code2.suspendresume.SuspendResume$TestThred.run(SuspendResume.java:22)
+        - locked <0x00000000d6144658> (a java.lang.Object)
+
+"Service Thread" #10 daemon prio=9 os_prio=0 tid=0x00000000196d5800 nid=0x36bf8 runnable [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"C1 CompilerThread2" #9 daemon prio=9 os_prio=2 tid=0x000000001965b800 nid=0x36bf4 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"C2 CompilerThread1" #8 daemon prio=9 os_prio=2 tid=0x0000000019658800 nid=0x36bf0 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"C2 CompilerThread0" #7 daemon prio=9 os_prio=2 tid=0x0000000019658000 nid=0x36bec waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Monitor Ctrl-Break" #6 daemon prio=5 os_prio=0 tid=0x000000001966f800 nid=0x36be8 runnable [0x0000000019a7f000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.SocketInputStream.socketRead0(Native Method)
+        at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+        at java.net.SocketInputStream.read(SocketInputStream.java:170)
+        at java.net.SocketInputStream.read(SocketInputStream.java:141)
+        at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+        at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+        at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+        - locked <0x00000000d61dab00> (a java.io.InputStreamReader)
+        at java.io.InputStreamReader.read(InputStreamReader.java:184)
+        at java.io.BufferedReader.fill(BufferedReader.java:161)
+        at java.io.BufferedReader.readLine(BufferedReader.java:324)
+        - locked <0x00000000d61dab00> (a java.io.InputStreamReader)
+        at java.io.BufferedReader.readLine(BufferedReader.java:389)
+        at com.intellij.rt.execution.application.AppMainV2$1.run(AppMainV2.java:64)
+
+"Attach Listener" #5 daemon prio=5 os_prio=2 tid=0x000000001807e800 nid=0x36bc8 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Signal Dispatcher" #4 daemon prio=9 os_prio=2 tid=0x0000000018031800 nid=0x36bc4 runnable [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Finalizer" #3 daemon prio=8 os_prio=1 tid=0x000000001800a800 nid=0x36b68 in Object.wait() [0x000000001937e000]
+   java.lang.Thread.State: WAITING (on object monitor)
+        at java.lang.Object.wait(Native Method)
+        - waiting on <0x00000000d5f08ee0> (a java.lang.ref.ReferenceQueue$Lock)
+        at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+        - locked <0x00000000d5f08ee0> (a java.lang.ref.ReferenceQueue$Lock)
+        at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:164)
+        at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:209)
+
+"Reference Handler" #2 daemon prio=10 os_prio=2 tid=0x00000000034e3000 nid=0x36b64 in Object.wait() [0x000000001927f000]
+   java.lang.Thread.State: WAITING (on object monitor)
+        at java.lang.Object.wait(Native Method)
+        - waiting on <0x00000000d5f06b50> (a java.lang.ref.Reference$Lock)
+        at java.lang.Object.wait(Object.java:502)
+        at java.lang.ref.Reference.tryHandlePending(Reference.java:191)
+        - locked <0x00000000d5f06b50> (a java.lang.ref.Reference$Lock)
+        at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:153)
+
+"VM Thread" os_prio=2 tid=0x0000000017fe7800 nid=0x36b60 runnable
+
+"GC task thread#0 (ParallelGC)" os_prio=0 tid=0x000000000340a000 nid=0x36b3c runnable
+
+"GC task thread#1 (ParallelGC)" os_prio=0 tid=0x000000000340b800 nid=0x36b40 runnable
+
+"GC task thread#2 (ParallelGC)" os_prio=0 tid=0x000000000340d800 nid=0x36b44 runnable
+
+"GC task thread#3 (ParallelGC)" os_prio=0 tid=0x000000000340f000 nid=0x36b48 runnable
+
+"VM Periodic Task Thread" os_prio=2 tid=0x000000001974d000 nid=0x36bfc waiting on condition
+
+JNI global references: 33
+
+Jconsole
+名称: ---------t1
+状态: RUNNABLE
+总阻止数: 0, 总等待数: 1
+
+堆栈跟踪:
+java.lang.Thread.suspend0(Native Method)
+java.lang.Thread.suspend(Thread.java:1029)
+com.example.demo.bookexample.code2.suspendresume.SuspendResume$TestThred.run(SuspendResume.java:32)
+   - 已锁定 java.lang.Object@7c0b29d
+
+名称: ---------t2
+状态: java.lang.Object@7c0b29d上的BLOCKED, 拥有者: ---------t1
+总阻止数: 1, 总等待数: 0
+
+堆栈跟踪:
+com.example.demo.bookexample.code2.suspendresume.SuspendResume$TestThred.run(SuspendResume.java:25)
+
+/**
+     * The minimum priority that a thread can have.
+     */
+    public final static int MIN_PRIORITY = 1;
+
+   /**
+     * The default priority that is assigned to a thread.
+     */
+    public final static int NORM_PRIORITY = 5;
+
+    /**
+     * The maximum priority that a thread can have.
+     */
+    public final static int MAX_PRIORITY = 10;
