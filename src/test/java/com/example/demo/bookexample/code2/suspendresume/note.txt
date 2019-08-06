@@ -118,3 +118,43 @@ com.example.demo.bookexample.code2.suspendresume.SuspendResume$TestThred.run(Sus
      * The maximum priority that a thread can have.
      */
     public final static int MAX_PRIORITY = 10;
+
+# testSuspend
+名称: Change Object Thread--
+状态: com.example.demo.bookexample.code2.suspendresume.GoodSuspend$ChangeObjectThread@43ae6729上的WAITING
+总阻止数: 57, 总等待数: 1
+
+堆栈跟踪:
+java.lang.Object.wait(Native Method)
+java.lang.Object.wait(Object.java:502)
+com.example.demo.bookexample.code2.suspendresume.GoodSuspend$ChangeObjectThread.run(GoodSuspend.java:38)
+
+名称: Read Object Thread--
+状态: RUNNABLE
+总阻止数: 58, 总等待数: 0
+
+堆栈跟踪:
+java.io.FileOutputStream.writeBytes(Native Method)
+java.io.FileOutputStream.write(FileOutputStream.java:326)
+java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java:82)
+java.io.BufferedOutputStream.flush(BufferedOutputStream.java:140)
+   - 已锁定 java.io.BufferedOutputStream@6d48400f
+java.io.PrintStream.write(PrintStream.java:482)
+   - 已锁定 java.io.PrintStream@446bcfc2
+java.io.FilterOutputStream.write(FilterOutputStream.java:97)
+ch.qos.logback.core.joran.spi.ConsoleTarget$1.write(ConsoleTarget.java:37)
+ch.qos.logback.core.OutputStreamAppender.writeBytes(OutputStreamAppender.java:199)
+ch.qos.logback.core.OutputStreamAppender.subAppend(OutputStreamAppender.java:231)
+ch.qos.logback.core.OutputStreamAppender.append(OutputStreamAppender.java:102)
+ch.qos.logback.core.UnsynchronizedAppenderBase.doAppend(UnsynchronizedAppenderBase.java:84)
+ch.qos.logback.core.spi.AppenderAttachableImpl.appendLoopOnAppenders(AppenderAttachableImpl.java:51)
+ch.qos.logback.classic.Logger.appendLoopOnAppenders(Logger.java:270)
+ch.qos.logback.classic.Logger.callAppenders(Logger.java:257)
+ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:421)
+ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:383)
+ch.qos.logback.classic.Logger.info(Logger.java:579)
+com.example.demo.bookexample.code2.suspendresume.GoodSuspend$ReadObjectThread.run(GoodSuspend.java:65)
+   - 已锁定 java.lang.String@4a652c3
+
+
+# testResume()
