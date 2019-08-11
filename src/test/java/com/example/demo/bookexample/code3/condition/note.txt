@@ -1,0 +1,8 @@
+mian thread           condition thread
+  等待 2 s
+                          获取锁 rLock
+                             condition.await(); 等待
+ 获取锁 rLock
+ condition.signal();
+ 释放锁 rLock
+                          wating --> running
