@@ -21,5 +21,6 @@ public class CountDownDemo {
         }
         countDownLatch.await();
         System.out.println("child thread over");
+        threadPool.shutdown();
     }
 }
