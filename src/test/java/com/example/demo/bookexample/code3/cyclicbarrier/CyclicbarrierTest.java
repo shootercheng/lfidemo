@@ -15,7 +15,7 @@ public class CyclicbarrierTest {
 
     public static void main(String[] args) throws InterruptedException {
         int num = 10;
-        CyclicBarrier cyclicBarrier = new CyclicBarrier(num, new BarrierAction(false, 10));
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(num, new BarrierAction(false, num));
         Soldier.setCyclic(cyclicBarrier);
         Soldier[] soldiers = new Soldier[10];
         for (int i = 0; i < 10; i++){

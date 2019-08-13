@@ -27,7 +27,7 @@ public class SuspendResume {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println(getName() + "is running");
+                System.out.println(getName() + " is running");
                 // 弃用方法，不要使用
                 // 挂起
                 Thread.currentThread().suspend();
@@ -71,7 +71,10 @@ public class SuspendResume {
         t2.resume();
     }
 
-
+    /**
+     * 线程优先级问题
+     * @throws Exception
+     */
     public static void testThread2() throws Exception {
         LOGGER.info("waiting jconsole connect~~~");
         ThreadNoSuspend threadNoSuspend1 = new ThreadNoSuspend("---------------- thread 1");
@@ -86,6 +89,6 @@ public class SuspendResume {
     }
 
     public static void main(String[] args) throws Exception {
-        testThread2();
+        testThread1();
     }
 }
