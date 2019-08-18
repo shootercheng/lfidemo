@@ -22,6 +22,7 @@ public class DefinRejectedExecutionHandler implements RejectedExecutionHandler {
 
     @Override
     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+        ThreadFactoryTest.getCountDownLatch().countDown();
         LOGGER.warn("threadPool {} rejectd thread {}", poolName, r.toString());
     }
 }
