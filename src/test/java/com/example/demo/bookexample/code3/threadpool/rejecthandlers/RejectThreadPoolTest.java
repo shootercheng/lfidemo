@@ -1,5 +1,6 @@
 package com.example.demo.bookexample.code3.threadpool.rejecthandlers;
 
+import com.example.demo.bookexample.code3.threadpool.thread.TestThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,7 +66,7 @@ public class RejectThreadPoolTest {
          ExecutorService executorService = createArrayBlockingPool();
 //        ExecutorService executorService = createRejectPool();
         for (int i = 0; i < 20; i++){
-            ThreadTask threadTask = new ThreadTask("task" + i);
+            TestThread threadTask = new TestThread("task" + i);
             executorService.submit(threadTask);
         }
         Thread.sleep(1000);
