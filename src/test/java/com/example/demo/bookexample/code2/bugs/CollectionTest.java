@@ -40,9 +40,9 @@ public class CollectionTest {
 
         @Override
         public void run(){
-            for (int i = 0; i < 1000000; i++){
+            for (int i = 0; i < 10000; i++){
                 map.put(getName() + i, i);
-//                currentHashMap.put(getName() + i, i);
+                currentHashMap.put(getName() + i, i);
             }
         }
     }

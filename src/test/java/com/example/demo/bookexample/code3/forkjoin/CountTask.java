@@ -34,17 +34,18 @@ public class CountTask extends RecursiveTask<Long> {
     @Override
     protected Long compute() {
         long result = 0L;
-        if ((end - start) <= THRESHOLD){
+        long subRes = end - start;
+        if ( subRes <= THRESHOLD){
             for (long i = start; i <= end; i++){
                 result = result + i;
             }
         } else {
-            long mod = (end - start) % THRESHOLD;
+            long mod = subRes % THRESHOLD;
             long childTasks;
             if (mod == 0){
-                childTasks = ( end - start) / THRESHOLD;
+                childTasks = subRes / THRESHOLD;
             } else {
-                childTasks = (end - start) / THRESHOLD + 1;
+                childTasks = subRes / THRESHOLD + 1;
             }
             CountTask[] countTaskList = createCountTask(childTasks);
             for (CountTask countTask : countTaskList){
