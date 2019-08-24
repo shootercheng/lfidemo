@@ -5,6 +5,13 @@ java.exe                    175812 Console                    4      4,672 K
 java.exe                    223888 Console                    4    107,116 K
 java.exe                    223904 Console                    4     25,416 K
 
+C:\Users\chengdu>jps
+13872 Launcher
+13924 DynamicdatasourceApplication
+7668 Jps
+12188 Main
+12860
+
 C:\Users\chengdu>jstack 223904
 2019-08-05 21:49:39
 Full thread dump Java HotSpot(TM) 64-Bit Server VM (25.77-b03 mixed mode):
