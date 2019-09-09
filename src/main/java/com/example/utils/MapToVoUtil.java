@@ -61,7 +61,8 @@ public class MapToVoUtil {
             if (clazzs.length > 0 && methodName.startsWith("set")) {
                 String typeName = clazzs[0].getTypeName();
                 if (!HANDLER_MAP.containsKey(typeName)){
-                    LOGGER.info("unknown type handler {}", typeName);
+                    LOGGER.error("unknown type handler {}", typeName);
+                    return ;
                 }
                 String fieldName = method.getName().substring("set".length()).toLowerCase();
                 if (map.containsKey(fieldName)) {
