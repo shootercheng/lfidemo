@@ -97,4 +97,12 @@ public class ArrayBlockingQueueTest {
         // wait 3 seconds
         Assert.assertEquals(null, blockingQueue.poll(3000, TimeUnit.MILLISECONDS));
     }
+
+    @Test
+    public void testSeqs(){
+        int seqs = 10;
+        int queueSize = 8;
+        int index = seqs & (queueSize - 1);
+        System.out.println(index);
+    }
 }
