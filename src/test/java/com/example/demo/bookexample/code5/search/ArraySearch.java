@@ -47,13 +47,12 @@ public class ArraySearch {
         SearchTask.setArr(arr);
         List<Future<Integer>> futureList = new ArrayList<>(threads);
         for (int i = 0; i < threads; i++) {
-            SearchTask searchTask = new SearchTask(searchSeqList.get(0), number);
+            SearchTask searchTask = new SearchTask(searchSeqList.get(i), number);
             futureList.add(threadPool.submit(searchTask));
         }
         for (Future<Integer> future : futureList){
             try {
                 int result = future.get();
-                System.out.println(result);
                 if (result != -1) {
                     System.out.println(result);
                 }
