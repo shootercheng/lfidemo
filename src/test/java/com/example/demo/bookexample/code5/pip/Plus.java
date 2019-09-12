@@ -15,11 +15,11 @@ public class Plus extends Thread {
         queue.put(calBase);
     }
 
-    private static volatile int size;
+    private int size;
 
     public Plus(String name, int size){
         super.setName(name);
-        Plus.size = size;
+        this.size = size;
     }
 
     @Override

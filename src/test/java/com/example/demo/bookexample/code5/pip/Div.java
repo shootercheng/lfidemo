@@ -20,11 +20,11 @@ public class Div extends Thread {
         queue.put(calBase);
     }
 
-    private static volatile int size;
+    private int size;
 
     public Div(String name, int size){
         super.setName(name);
-        Div.size = size;
+        this.size = size;
     }
 
     @Override

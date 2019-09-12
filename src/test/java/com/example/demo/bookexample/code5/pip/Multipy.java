@@ -15,11 +15,11 @@ public class Multipy extends Thread {
         queue.add(calBase);
     }
 
-    private static volatile int size;
+    private int size;
 
     public Multipy(String name, int size){
         super.setName(name);
-        Multipy.size = size;
+        this.size = size;
     }
 
     @Override
