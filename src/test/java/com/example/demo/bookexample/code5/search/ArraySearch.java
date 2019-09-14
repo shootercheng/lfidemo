@@ -22,7 +22,6 @@ public class ArraySearch {
         } else {
             step = arrLength / threads + 1;
         }
-        int lastStep = arrLength - ((threads - 1) * step);
         int start = 0;
         for (int i = 0; i < threads - 1; i++) {
             int end = start + (step - 1);
@@ -30,6 +29,7 @@ public class ArraySearch {
             list.add(searchSeq);
             start = start + step;
         }
+        int lastStep = arrLength - ((threads - 1) * step);
         SearchSeq searchSeq = new SearchSeq(start, start + lastStep - 1);
         list.add(searchSeq);
         return list;
