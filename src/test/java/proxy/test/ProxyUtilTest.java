@@ -3,6 +3,8 @@ package proxy.test;
 import com.example.proxy.ProxyUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import proxy.service.CalService;
 import proxy.service.CalServiceImpl;
 
@@ -11,6 +13,8 @@ import proxy.service.CalServiceImpl;
  * @date 2019/9/19.
  */
 public class ProxyUtilTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProxyUtilTest.class);
 
     @Test
     public void testJdkProxy() {
@@ -40,6 +44,7 @@ public class ProxyUtilTest {
 
     @Test
     public void testCglibProxy2() {
+        LOGGER.info("cglib proxy....");
         CalService calServiceProxy = (CalServiceImpl) ProxyUtil.cglibProxy(CalServiceImpl.class, "ProxyUtilTest");
         System.out.println(calServiceProxy.add(1, 2));
     }
