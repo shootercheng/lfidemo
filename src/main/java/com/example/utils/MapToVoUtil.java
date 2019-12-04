@@ -1,21 +1,24 @@
 package com.example.utils;
 
-import com.example.model.vo.ReflectVo;
 import com.example.type.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
+ * parse excel, jsonObj
  * @author chengdu
  * @date 2019/8/31.
  */
-public class MapToVoUtil {
+public class  MapToVoUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReflectUtil.class);
 
@@ -42,7 +45,7 @@ public class MapToVoUtil {
         T object = null;
         try {
             object = clazz.newInstance();
-            Method[] methods = clazz.getMethods();
+            List<Method> methods = ReflectUtil.getBeanMethods(clazz);
             for (Method method : methods) {
                 reflectMethod(method, map, object);
             }
@@ -65,9 +68,10 @@ public class MapToVoUtil {
                     return ;
                 }
                 String fieldName = method.getName().substring("set".length()).toLowerCase();
-                if (map.containsKey(fieldName)) {
+                String paramValue = map.get(fieldName);
+                if (!StringUtils.isEmpty(paramValue)) {
                     BaseTypeHandler baseTypeHandler = HANDLER_MAP.get(typeName);
-                    Object value = baseTypeHandler.convertStrToType(map.get(fieldName));
+                    Object value = baseTypeHandler.convertStrToType(paramValue);
                     method.invoke(t, value);
                 }
             }
@@ -78,15 +82,30 @@ public class MapToVoUtil {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        Map<String, String> map = new HashMap<>();
-        map.put("id", "1");
-        map.put("userName".toLowerCase(), "cd");
-        map.put("score", "99.9");
-        map.put("sort", "31234124234122354");
-        map.put("date", "2019/8/31");
-        ReflectVo reflectVo1 = reflectByStrMap(ReflectVo.class, map);
-        System.out.println(reflectVo1);
-
+    public static <T> T reflectByMap(Class<T> clazz, Map<String, Object> map) {
+        T object = null;
+        try {
+            object = clazz.newInstance();
+            Method[] methods = clazz.getMethods();
+            for (Method method : methods) {
+                String methodName = method.getName();
+                if (!methodName.startsWith("set")) {
+                    continue;
+                }
+                String fieldName = method.getName().substring("set".length()).toLowerCase();
+                if (map.containsKey(fieldName)) {
+                    Parameter parameter = method.getParameters()[0];
+                    Object value = parameter.getType().cast(map.get(fieldName));
+                    method.invoke(object, value);
+                }
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return object;
     }
 }
