@@ -7,10 +7,7 @@ import com.example.utils.FileParseCommonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,8 +20,6 @@ import java.util.Map;
 public class CsvFileParse implements FileParse {
     private static final Logger LOGGER = LoggerFactory.getLogger(CsvFileParse.class);
 
-    private BusinessDefineParse businessDefineParse;
-
     @Override
     public <T> List<T> parseFile(String filePath, Class<T> clazz, ParseParam parseParam) {
         // 加载文件
@@ -32,8 +27,8 @@ public class CsvFileParse implements FileParse {
         List<T> resultList = new LinkedList<>();
         ErrorRecord errorRecord = new DefaultErrorRecord(new StringBuilder(""));
         try {
-            reader = new BufferedReader(new FileReader(filePath));
-            businessDefineParse = processDefineParse(parseParam);
+            reader = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(filePath), parseParam.getEncode()));
             int readLine = 0;
             String lineStr;
             while ( (lineStr = reader.readLine()) != null) {
@@ -82,8 +77,8 @@ public class CsvFileParse implements FileParse {
                     FileParseCommonUtil.invokeValue(t, fieldSetterMap.get(i), inputArr[i]);
                 }
             }
-            if (businessDefineParse != null) {
-                businessDefineParse.defineParse(t, inputArr, parseParam);
+            if (parseParam.getBusinessDefineParse() != null) {
+                parseParam.getBusinessDefineParse().defineParse(t, inputArr, parseParam);
             }
         } catch (InstantiationException e) {
             e.printStackTrace();

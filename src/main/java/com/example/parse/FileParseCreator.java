@@ -6,7 +6,7 @@ import com.example.constant.FileType;
  * @author chengdu
  * @date 2020/1/12
  */
-public class FileParseFactory {
+public class FileParseCreator {
 
     private static final class FileParseHolder {
         private static final FileParse csvFileParse = new CsvFileParse();
@@ -20,7 +20,7 @@ public class FileParseFactory {
             case EXCEL:
                 return FileParseHolder.excelFileParse;
             default:
-                throw new IllegalArgumentException("intput file type error");
+                throw new IllegalArgumentException("input file type error");
         }
     }
 }

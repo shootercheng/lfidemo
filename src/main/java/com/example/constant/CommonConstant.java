@@ -23,4 +23,12 @@ public class CommonConstant {
         map.put(TypeEnum.Boolean.type(), new BooleanTypeHandler());
         HANDLER_MAP = Collections.unmodifiableMap(map);
     }
+
+    public static final String GBK = "GBK";
+
+    public static final String UTF8 = "UTF-8";
+
+    public static final String UTF16 = "UTF-16";
+
+    public static final String UNICODE = "Unicode";
 }

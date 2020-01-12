@@ -18,7 +18,9 @@ public class ParseParam {
 
     private Map<Integer, Method> fieldSetterMap;
 
-    private Class<? extends BusinessDefineParse> businessDefineClazz;
+    private BusinessDefineParse businessDefineParse;
+
+    private String encode;
 
     public ParseParam setStartLine(int startLine) {
         this.startLine = startLine;
@@ -35,8 +37,13 @@ public class ParseParam {
         return this;
     }
 
-    public ParseParam setBusinessDefineClazz(Class<? extends BusinessDefineParse> businessDefineClazz) {
-        this.businessDefineClazz = businessDefineClazz;
+    public ParseParam setBusinessDefineParse(BusinessDefineParse businessDefineParse) {
+        this.businessDefineParse = businessDefineParse;
+        return this;
+    }
+
+    public ParseParam setEncode(String encode) {
+        this.encode = encode;
         return this;
     }
 }

@@ -11,24 +11,23 @@ import java.util.function.Function;
  */
 public class BatchInsertUtil {
 
-    public static <T> int batchInsert(List<T> intputList, Function<List<T>, Integer> function, int batchNum) {
-        if (CollectionUtils.isEmpty(intputList)) {
+    public static <T> int batchInsert(List<T> inputList, Function<List<T>, Integer> function, int batchNum) {
+        if (CollectionUtils.isEmpty(inputList)) {
             return 0;
         }
-        int listSize = intputList.size();
+        int listSize = inputList.size();
         if (listSize < batchNum) {
-            function.apply(intputList);
-            return listSize;
+            return function.apply(inputList);
         }
         int sum = 0;
         int startIndex = 0;
         while (startIndex + batchNum < listSize) {
-            List<T> batchList = intputList.subList(startIndex, startIndex + batchNum);
+            List<T> batchList = inputList.subList(startIndex, startIndex + batchNum);
             sum = sum + function.apply(batchList);
             startIndex = startIndex + batchNum;
         }
         if (startIndex < listSize) {
-            List<T> leftList = intputList.subList(startIndex, listSize);
+            List<T> leftList = inputList.subList(startIndex, listSize);
             sum = sum + function.apply(leftList);
         }
         return sum;

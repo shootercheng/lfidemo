@@ -18,14 +18,12 @@ import java.util.*;
  * @date 2020/1/12
  */
 public class ExcelFileParse implements FileParse {
-    private BusinessDefineParse businessDefineParse;
 
     @Override
     public <T> List<T> parseFile(String filePath, Class<T> clazz, ParseParam parseParam) {
         Workbook workbook = ExcelUtil.getWorkBook(filePath);
         Sheet sheet = workbook.getSheetAt(parseParam.getSheetNum());
         int rows = sheet.getPhysicalNumberOfRows();
-        businessDefineParse = processDefineParse(parseParam);
         ErrorRecord errorRecord = new DefaultErrorRecord(new StringBuilder(""));
         List<T> resultList = new LinkedList<>();
         for (int i = parseParam.getStartLine(); i < rows; i++) {
@@ -61,8 +59,8 @@ public class ExcelFileParse implements FileParse {
                 cellValue = row.getCell(column).getStringCellValue();
                 FileParseCommonUtil.invokeValue(t, setterMethod, cellValue);
             }
-            if (businessDefineParse != null) {
-                businessDefineParse.defineParse(t, row, parseParam);
+            if (parseParam.getBusinessDefineParse() != null) {
+                parseParam.getBusinessDefineParse().defineParse(t, row, parseParam);
             }
         } catch (InstantiationException e) {
             e.printStackTrace();

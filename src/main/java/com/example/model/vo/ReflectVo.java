@@ -20,4 +20,6 @@ public class ReflectVo {
     private Long sort;
 
     private Date date;
+
+    private String otherInfo;
 }

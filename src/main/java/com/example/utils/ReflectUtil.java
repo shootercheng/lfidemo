@@ -1,8 +1,5 @@
 package com.example.utils;
 
-import com.example.model.vo.ReflectVo;
-import org.apache.tomcat.util.modeler.BaseModelMBean;
-
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +23,7 @@ public class ReflectUtil {
 
     private static final  Map<Class<?>, Map<String, Method>> beanFieldSetterCache = new ConcurrentHashMap<>(2^10);
 
-    private static final String SET_METHOD_NAME = "set";
+    private static final String SET_METHOD_PREFIX = "set";
 
     public static Field[] getClassField(Class<?> clazz) {
         if (clazz == null) {
@@ -187,7 +184,7 @@ public class ReflectUtil {
         for (Method method : methods) {
             String methodName = method.getName();
             Class<?>[] parameterTypes = method.getParameterTypes();
-            if (methodName.startsWith(SET_METHOD_NAME) && parameterTypes.length == 1) {
+            if (methodName.startsWith(SET_METHOD_PREFIX) && parameterTypes.length == 1) {
                 beanMethods.add(method);
             }
         }
@@ -224,8 +221,8 @@ public class ReflectUtil {
         for (Method method : methods) {
             String methodName = method.getName();
             Class<?>[] parameterTypes = method.getParameterTypes();
-            if (methodName.startsWith(SET_METHOD_NAME) && parameterTypes.length == 1) {
-                fieldName = methodName.substring(SET_METHOD_NAME.length()).toLowerCase();
+            if (methodName.startsWith(SET_METHOD_PREFIX) && parameterTypes.length == 1) {
+                fieldName = methodName.substring(SET_METHOD_PREFIX.length()).toLowerCase();
                 beanSetterMap.put(fieldName, method);
             }
         }

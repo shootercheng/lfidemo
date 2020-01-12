@@ -3,12 +3,10 @@ package com.example.utils;
 import com.example.constant.CommonConstant;
 import com.example.constant.FileType;
 import com.example.exception.FileParseException;
-import com.example.parse.FileParse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;

@@ -15,7 +15,7 @@ import java.util.Map;
 public class ParseCommonTest {
 
     public ParseParam createReflectParam() {
-        Map<Integer, String> fieldColumnMap =new HashMap<>();
+        Map<Integer, String> fieldColumnMap = new HashMap<>(16);
         fieldColumnMap.put(0, "id");
         fieldColumnMap.put(1, "userName");
         fieldColumnMap.put(2, "score");
