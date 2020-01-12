@@ -10,7 +10,8 @@ public enum TypeEnum {
     Integer("java.lang.Integer"),
     Long("java.lang.Long"),
     Double("java.lang.Double"),
-    Date("java.util.Date");
+    Date("java.util.Date"),
+    Boolean("java.lang.Boolean");
 
     private String clazz;
 

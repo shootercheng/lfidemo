@@ -1,5 +1,6 @@
 package com.example.utils;
 
+import com.example.constant.CommonConstant;
 import com.example.type.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,8 +9,6 @@ import org.springframework.util.StringUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,18 +19,7 @@ import java.util.Map;
  */
 public class  MapToVoUtil {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReflectUtil.class);
-
-    private static final Map<String, BaseTypeHandler> HANDLER_MAP;
-    static {
-        Map<String, BaseTypeHandler> map = new HashMap<>();
-        map.put(TypeEnum.String.type(), new StringTypeHandler());
-        map.put(TypeEnum.Integer.type(), new IntegerTypeHandler());
-        map.put(TypeEnum.Double.type(), new DoubleTypeHandler());
-        map.put(TypeEnum.Long.type(), new LongTypeHandler());
-        map.put(TypeEnum.Date.type(), new DateTypeHandler());
-        HANDLER_MAP = Collections.unmodifiableMap(map);
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(MapToVoUtil.class);
 
     /**
      * 根据Vo setXX 反射
@@ -63,14 +51,14 @@ public class  MapToVoUtil {
             Class<?>[] clazzs = method.getParameterTypes();
             if (clazzs.length > 0 && methodName.startsWith("set")) {
                 String typeName = clazzs[0].getTypeName();
-                if (!HANDLER_MAP.containsKey(typeName)){
+                if (!CommonConstant.HANDLER_MAP.containsKey(typeName)){
                     LOGGER.error("unknown type handler {}", typeName);
                     return ;
                 }
                 String fieldName = method.getName().substring("set".length()).toLowerCase();
                 String paramValue = map.get(fieldName);
                 if (!StringUtils.isEmpty(paramValue)) {
-                    BaseTypeHandler baseTypeHandler = HANDLER_MAP.get(typeName);
+                    BaseTypeHandler baseTypeHandler = CommonConstant.HANDLER_MAP.get(typeName);
                     Object value = baseTypeHandler.convertStrToType(paramValue);
                     method.invoke(t, value);
                 }

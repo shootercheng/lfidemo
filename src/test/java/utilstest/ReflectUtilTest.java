@@ -11,6 +11,7 @@ import utilstest.models.TestEmptyClazz;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author chengdu
@@ -84,5 +85,12 @@ public class ReflectUtilTest {
         List<Method> beanMethod = ReflectUtil.getBeanMethods(BeanTest.class);
         List<Method> beanMethod2 = ReflectUtil.getBeanMethods(BeanTest.class);
         Assert.assertTrue(beanMethod.size() == 4);
+    }
+
+    @Test
+    public void testFieldMethod() {
+        Map<String, Method> methodMap = ReflectUtil.getBeanSetterMap(BeanTest.class);
+        Map<String, Method> methodMap2 = ReflectUtil.getBeanSetterMap(BeanTest.class);
+        Assert.assertTrue(methodMap.size() == 4);
     }
 }

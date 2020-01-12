@@ -24,6 +24,8 @@ public class ReflectUtil {
 
     private static final  Map<Class<?>, List<Method>> beanMethodCache = new ConcurrentHashMap<>(2^5);
 
+    private static final  Map<Class<?>, Map<String, Method>> beanFieldSetterCache = new ConcurrentHashMap<>(2^10);
+
     public static Field[] getClassField(Class<?> clazz) {
         if (clazz == null) {
             throw new IllegalArgumentException("input param is null");
@@ -174,7 +176,7 @@ public class ReflectUtil {
     }
 
     /**
-     * find setXX, isXX method
+     * find setXX method
      * @param methods
      * @return
      */
@@ -188,5 +190,42 @@ public class ReflectUtil {
             }
         }
         return beanMethods;
+    }
+
+    /**
+     * field name -> field setter
+     * @param clazz
+     * @return
+     */
+    public static Map<String, Method> getBeanSetterMap(Class<?> clazz) {
+        if (clazz == null) {
+            throw new IllegalArgumentException("input param class is null");
+        }
+        Map<String, Method> beanSetterMap = beanFieldSetterCache.get(clazz);
+        if (beanSetterMap == null) {
+            beanSetterMap = new HashMap<>(16);
+            Class<?> tempClazz = clazz;
+            while (tempClazz != Object.class) {
+                Method[] methods = getClassMethod(tempClazz);
+                if (methods != null && methods.length > 0) {
+                    mapFieldSetter(methods, beanSetterMap);
+                }
+                tempClazz = tempClazz.getSuperclass();
+            }
+            beanFieldSetterCache.put(clazz, beanSetterMap);
+        }
+        return beanSetterMap;
+    }
+
+    private static void mapFieldSetter(Method[] methods, Map<String, Method> beanSetterMap) {
+        String fieldName;
+        for (Method method : methods) {
+            String methodName = method.getName();
+            Class<?>[] parameterTypes = method.getParameterTypes();
+            if (methodName.startsWith("set") && parameterTypes.length == 1) {
+                fieldName = methodName.substring(3).toLowerCase();
+                beanSetterMap.put(fieldName, method);
+            }
+        }
     }
 }

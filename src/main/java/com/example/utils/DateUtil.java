@@ -1,5 +1,8 @@
 package com.example.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -10,6 +13,7 @@ import java.util.regex.Pattern;
  * @date 2019/8/30.
  */
 public class DateUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DateUtil.class);
 
     private static final Map<Pattern, String> REGEX_MAP;
     static {
@@ -32,6 +36,7 @@ public class DateUtil {
             }
         }
         if (pattern == null){
+            LOGGER.error("pattern not config or input str error {}", dateStr);
             return date;
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
