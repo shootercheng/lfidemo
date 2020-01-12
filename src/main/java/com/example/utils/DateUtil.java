@@ -1,5 +1,6 @@
 package com.example.utils;
 
+import com.example.exception.DataParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +38,7 @@ public class DateUtil {
         }
         if (pattern == null){
             LOGGER.error("pattern not config or input str error {}", dateStr);
-            return date;
+            throw new DataParseException("pattern not config or input str error " + dateStr);
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         try {

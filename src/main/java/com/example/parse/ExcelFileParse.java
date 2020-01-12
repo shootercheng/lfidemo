@@ -1,8 +1,10 @@
 package com.example.parse;
 
 import com.example.model.vo.ParseParam;
+import com.example.parse.error.DefaultErrorRecord;
+import com.example.parse.error.ErrorRecord;
 import com.example.utils.ExcelUtil;
-import com.example.utils.ParseFileCommonUtil;
+import com.example.utils.FileParseCommonUtil;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -16,17 +18,23 @@ import java.util.*;
  * @date 2020/1/12
  */
 public class ExcelFileParse implements FileParse {
+    private BusinessDefineParse businessDefineParse;
+
     @Override
     public <T> List<T> parseFile(String filePath, Class<T> clazz, ParseParam parseParam) {
         Workbook workbook = ExcelUtil.getWorkBook(filePath);
         Sheet sheet = workbook.getSheetAt(parseParam.getSheetNum());
         int rows = sheet.getPhysicalNumberOfRows();
+        businessDefineParse = processDefineParse(parseParam);
+        ErrorRecord errorRecord = new DefaultErrorRecord(new StringBuilder(""));
         List<T> resultList = new LinkedList<>();
-        for (int i = 0; i < rows; i++) {
-            if (i >= parseParam.getStartLine()) {
-                Row row = sheet.getRow(i);
-                T t = convertRowToVo(clazz, row, parseParam);
+        for (int i = parseParam.getStartLine(); i < rows; i++) {
+            Row row = sheet.getRow(i);
+            T t = convertRowToVo(clazz, row, parseParam);
+            if (t != null) {
                 resultList.add(t);
+            } else {
+                errorRecord.writeErrorMsg("");
             }
         }
         return resultList;
@@ -51,7 +59,10 @@ public class ExcelFileParse implements FileParse {
                 setterMethod = entry.getValue();
                 row.getCell(column).setCellType(CellType.STRING);
                 cellValue = row.getCell(column).getStringCellValue();
-                ParseFileCommonUtil.invokeValue(t, setterMethod, cellValue);
+                FileParseCommonUtil.invokeValue(t, setterMethod, cellValue);
+            }
+            if (businessDefineParse != null) {
+                businessDefineParse.defineParse(t, row, parseParam);
             }
         } catch (InstantiationException e) {
             e.printStackTrace();

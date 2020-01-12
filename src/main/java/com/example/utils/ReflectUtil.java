@@ -26,6 +26,8 @@ public class ReflectUtil {
 
     private static final  Map<Class<?>, Map<String, Method>> beanFieldSetterCache = new ConcurrentHashMap<>(2^10);
 
+    private static final String SET_METHOD_NAME = "set";
+
     public static Field[] getClassField(Class<?> clazz) {
         if (clazz == null) {
             throw new IllegalArgumentException("input param is null");
@@ -185,7 +187,7 @@ public class ReflectUtil {
         for (Method method : methods) {
             String methodName = method.getName();
             Class<?>[] parameterTypes = method.getParameterTypes();
-            if (methodName.startsWith("set") && parameterTypes.length == 1) {
+            if (methodName.startsWith(SET_METHOD_NAME) && parameterTypes.length == 1) {
                 beanMethods.add(method);
             }
         }
@@ -222,8 +224,8 @@ public class ReflectUtil {
         for (Method method : methods) {
             String methodName = method.getName();
             Class<?>[] parameterTypes = method.getParameterTypes();
-            if (methodName.startsWith("set") && parameterTypes.length == 1) {
-                fieldName = methodName.substring(3).toLowerCase();
+            if (methodName.startsWith(SET_METHOD_NAME) && parameterTypes.length == 1) {
+                fieldName = methodName.substring(SET_METHOD_NAME.length()).toLowerCase();
                 beanSetterMap.put(fieldName, method);
             }
         }
