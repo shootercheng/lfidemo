@@ -11,5 +11,12 @@ import java.util.List;
 public interface FileParse {
     <T> List<T> parseFile(String filePath, Class<T> clazz, ParseParam parseParam);
 
+    default void checkParam(ParseParam parseParam) {
+        if (parseParam.getFieldSetterMap() == null ||
+                parseParam.getFieldSetterMap().size() == 0) {
+            throw new IllegalArgumentException("please check field setter mapper");
+        }
+    }
+
     <T> List<T> parseFileBatch(String filePath, Class<?> clazz, List<ParseParam> parseParams, int batchNum);
 }

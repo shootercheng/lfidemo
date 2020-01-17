@@ -1,6 +1,9 @@
 package com.example.model.vo;
 
 import com.example.parse.BusinessDefineParse;
+import com.example.parse.error.DefaultErrorRecord;
+import com.example.parse.error.ErrorRecord;
+import com.example.parse.format.CellFormat;
 import lombok.Data;
 
 import java.lang.reflect.Method;
@@ -16,11 +19,19 @@ public class ParseParam {
 
     private int sheetNum;
 
-    private Map<Integer, Method> fieldSetterMap;
+    private Map<String, Method> fieldSetterMap;
 
     private BusinessDefineParse businessDefineParse;
 
     private String encode;
+
+    private ErrorRecord errorRecord;
+
+    private CellFormat cellFormat;
+
+    public ParseParam() {
+        errorRecord = new DefaultErrorRecord(new StringBuilder(""));
+    }
 
     public ParseParam setStartLine(int startLine) {
         this.startLine = startLine;
@@ -32,7 +43,7 @@ public class ParseParam {
         return this;
     }
 
-    public ParseParam setFieldSetterMap(Map<Integer, Method> fieldSetterMap) {
+    public ParseParam setFieldSetterMap(Map<String, Method> fieldSetterMap) {
         this.fieldSetterMap = fieldSetterMap;
         return this;
     }
@@ -44,6 +55,16 @@ public class ParseParam {
 
     public ParseParam setEncode(String encode) {
         this.encode = encode;
+        return this;
+    }
+
+    public ParseParam setErrorRecord(ErrorRecord errorRecord) {
+        this.errorRecord = errorRecord;
+        return this;
+    }
+
+    public ParseParam setCellFormat(CellFormat cellFormat) {
+        this.cellFormat = cellFormat;
         return this;
     }
 }

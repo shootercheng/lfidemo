@@ -8,6 +8,7 @@ import com.example.parse.FileParseCreator;
 import com.example.utils.FileParseCommonUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import parse.define.InfoFormat;
 import parse.define.ReflectVoDefineParse;
 
 import java.util.List;
@@ -35,5 +36,17 @@ public class CsvFileParseTest extends ParseCommonTest {
         FileParse fileParse = FileParseCreator.createFileParse(FileParseCommonUtil.getFileType(filePath));
         List<ReflectVo> reflectVoList = fileParse.parseFile(filePath, ReflectVo.class, parseParam);
         Assert.assertEquals(6, reflectVoList.size());
+    }
+
+    @Test
+    public void testDefineFormat() {
+        String filePath = "file/test.csv";
+        ParseParam parseParam = super.createReflectParam()
+                .setBusinessDefineParse(new ReflectVoDefineParse())
+                .setEncode(CommonConstant.GBK).setCellFormat(new InfoFormat());
+        FileParse fileParse = FileParseCreator.createFileParse(FileParseCommonUtil.getFileType(filePath));
+        List<ReflectVo> reflectVoList = fileParse.parseFile(filePath, ReflectVo.class, parseParam);
+        Assert.assertEquals(6, reflectVoList.size());
+        Assert.assertEquals("chengdu", reflectVoList.get(0).getUserName());
     }
 }
