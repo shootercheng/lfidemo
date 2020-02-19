@@ -24,11 +24,14 @@ public class BatchUtilTest {
         Assert.assertEquals(10, sum);
     }
 
-
-    private static class TestService {
-
-        public int insertList(List<Integer> list) {
-            return list.size();
+    @Test
+    public void testBatch2() {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add(i);
         }
+        TestService testService = new TestService();
+        int sum = BatchInsertUtil.batchInsert(list, testService::insertList, 2);
+        Assert.assertEquals(10, sum);
     }
 }
