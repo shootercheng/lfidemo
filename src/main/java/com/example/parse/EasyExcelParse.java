@@ -19,7 +19,7 @@ public class EasyExcelParse implements FileParse {
     @Override
     public <T> List<T> parseFile(String filePath, Class<T> clazz, ParseParam parseParam) {
         ModelParserListener modelParserListener = new ModelParserListener(parseParam);
-        EasyExcel.read(filePath, modelParserListener)
+        EasyExcel.read(filePath, modelParserListener).useDefaultListener(false)
                 .sheet(parseParam.getSheetNum()).headRowNumber(parseParam.getStartLine()).doRead();
         List<Map<Integer, CellData>> resultList = modelParserListener.getResultList();
         // TODO convert to vo
