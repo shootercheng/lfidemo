@@ -15,6 +15,11 @@ public class DerbyTest {
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         Connection connection = DriverManager.getConnection("jdbc:derby:ibderby;create=true");
         Statement statement = connection.createStatement();
+        try {
+            statement.executeUpdate("create table t_test (id int primary key)");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         ResultSet resultSets = statement.executeQuery("select * from t_test");
         while (resultSets.next()) {
             int id = resultSets.getInt(0);

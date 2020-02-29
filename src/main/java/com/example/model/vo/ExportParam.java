@@ -11,7 +11,7 @@ import java.util.Map;
  */
 @Data
 public class ExportParam {
-    String headerData;
+    private String headerData;
 
     private Charset charset;
 

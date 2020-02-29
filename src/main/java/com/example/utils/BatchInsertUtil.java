@@ -26,10 +26,8 @@ public class BatchInsertUtil {
             sum = sum + function.apply(batchList);
             startIndex = startIndex + batchNum;
         }
-        if (startIndex < listSize) {
-            List<T> leftList = inputList.subList(startIndex, listSize);
-            sum = sum + function.apply(leftList);
-        }
+        List<T> leftList = inputList.subList(startIndex, listSize);
+        sum = sum + function.apply(leftList);
         return sum;
     }
 }

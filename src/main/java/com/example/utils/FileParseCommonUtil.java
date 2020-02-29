@@ -1,7 +1,7 @@
 package com.example.utils;
 
 import com.example.constant.CommonConstant;
-import com.example.constant.FileType;
+import com.example.constant.ParseName;
 import com.example.exception.FileParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +27,11 @@ public class FileParseCommonUtil {
         for (Map.Entry<String, String> entry : entrySet) {
             String column = entry.getKey();
             String fieldName = entry.getValue().toLowerCase();
+            Method setterMethod = allBeanSetter.get(fieldName);
+            if (setterMethod == null) {
+                throw new IllegalArgumentException("Bean " + clazz + " not contain field " + fieldName +
+                        " please check config column map");
+            }
             columnFieldSetter.put(column, allBeanSetter.get(fieldName));
         }
         return columnFieldSetter;
@@ -63,19 +68,19 @@ public class FileParseCommonUtil {
         }
     }
 
-    public static FileType getFileType(String filePath) {
+    public static ParseName getFileType(String filePath) {
         if (StringUtils.isEmpty(filePath)) {
             throw new IllegalArgumentException("input filepath is empty");
         }
-        FileType fileType;
+        ParseName parseName;
         if (filePath.endsWith(".csv")) {
-            fileType = FileType.CSV;
+            parseName = ParseName.CSV;
         } else if (filePath.endsWith(".xls")|| filePath.endsWith(".xlsx")) {
-            fileType = FileType.EXCEL;
+            parseName = ParseName.EXCEL;
         } else {
             throw new IllegalArgumentException("input filepath error " + filePath);
         }
-        return fileType;
+        return parseName;
     }
 
     public static Map<String, Integer> EXCEL_COLUMN;
