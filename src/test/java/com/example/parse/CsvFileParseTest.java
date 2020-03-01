@@ -24,7 +24,7 @@ public class CsvFileParseTest extends ParseCommonTest {
     @Test
     public void testCsvParse() {
         String filePath = "file/test.csv";
-        FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.getFileType(filePath));
+        FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.findParserType(filePath));
         List<ReflectVo> reflectVoList = fileParse.parseFile(filePath, ReflectVo.class, createReflectParam());
         Assert.assertEquals(6, reflectVoList.size());
     }
@@ -35,7 +35,7 @@ public class CsvFileParseTest extends ParseCommonTest {
         ParseParam parseParam = super.createReflectParam()
                 .setBusinessDefineParse(new ReflectVoDefineParse())
                 .setEncode(CommonConstant.GBK);
-        FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.getFileType(filePath));
+        FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.findParserType(filePath));
         List<ReflectVo> reflectVoList = fileParse.parseFile(filePath, ReflectVo.class, parseParam);
         Assert.assertEquals(6, reflectVoList.size());
     }
@@ -46,7 +46,7 @@ public class CsvFileParseTest extends ParseCommonTest {
         ParseParam parseParam = super.createReflectParam()
                 .setBusinessDefineParse(new ReflectVoDefineParse())
                 .setEncode(CommonConstant.GBK).setCellFormat(new InfoFormat());
-        FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.getFileType(filePath));
+        FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.findParserType(filePath));
         List<ReflectVo> reflectVoList = fileParse.parseFile(filePath, ReflectVo.class, parseParam);
         Assert.assertEquals(6, reflectVoList.size());
         Assert.assertEquals("chengdu", reflectVoList.get(0).getUserName());
@@ -68,9 +68,9 @@ public class CsvFileParseTest extends ParseCommonTest {
 
     @Test
     public void testQuotation() {
-        String filePath = "test/a.csv";
+        String filePath = "file/a.csv";
         ParseParam parseParam = createInfoParam().setEncode(CommonConstant.GBK);
-        FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.getFileType(filePath));
+        FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.findParserType(filePath));
         List<UserInfo> userInfoList = fileParse.parseFile(filePath, UserInfo.class, parseParam);
         System.out.println(userInfoList);
     }

@@ -21,7 +21,7 @@ public class ExcelParseTest extends ParseCommonTest {
     @Test
     public void testExcel2003() {
         String filePath = "file/test2003.xls";
-        FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.getFileType(filePath));
+        FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.findParserType(filePath));
         List<ReflectVo> reflectVoList = fileParse.parseFile(filePath, ReflectVo.class, createReflectParam());
         Assert.assertEquals(6, reflectVoList.size());
     }
@@ -29,15 +29,15 @@ public class ExcelParseTest extends ParseCommonTest {
     @Test
     public void testExcel2007() {
         String filePath = "file/test2007.xlsx";
-        FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.getFileType(filePath));
+        FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.findParserType(filePath));
         List<ReflectVo> reflectVoList = fileParse.parseFile(filePath, ReflectVo.class, createReflectParam());
         Assert.assertEquals(6, reflectVoList.size());
     }
 
     @Test
     public void testExcelType() {
-        String filePath = "test/test2007.xlsx";
-        FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.getFileType(filePath));
+        String filePath = "file/test2007.xlsx";
+        FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.findParserType(filePath));
         List<ExcelTypeVo> reflectVoList = fileParse.parseFile(filePath, ExcelTypeVo.class, createExcelTypeParam());
         Assert.assertEquals(6, reflectVoList.size());
     }
@@ -58,7 +58,7 @@ public class ExcelParseTest extends ParseCommonTest {
 
     @Test
     public void testColumn() {
-        String name = "A";
+        String name = "ZZ";
         int column = -1;
         char[] charArr = name.toCharArray();
         for (char c : charArr) {
@@ -66,6 +66,22 @@ public class ExcelParseTest extends ParseCommonTest {
         }
         System.out.print(column);
 //        column + 1 / 26
+    }
+
+    @Test
+    public void testGenChar() {
+        StringBuilder stringBuilder = new StringBuilder("");
+        for (int i = 0; i < 26; i++) {
+            char curChar = (char) ('A' + i);
+            stringBuilder.append("\'").append(curChar).append("\'").append(",");
+        }
+        System.out.println(stringBuilder.toString());
+    }
+
+    @Test
+    public void testColumnMap() {
+        Assert.assertTrue(FileParseCommonUtil.EXCEL_COLUMN.get("A") == 0);
+        Assert.assertTrue("A".equals(FileParseCommonUtil.COLUMN_NUM.get(0)));
     }
 
 }

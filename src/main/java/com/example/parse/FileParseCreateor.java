@@ -1,6 +1,6 @@
 package com.example.parse;
 
-import com.example.constant.ParseName;
+import com.example.constant.ParseType;
 
 /**
  * @author chengdu
@@ -14,8 +14,8 @@ public class FileParseCreateor {
         private static final FileParse easyExcelParse = new EasyExcelParse();
     }
 
-    public static FileParse createFileParse(ParseName parseName) {
-        switch (parseName) {
+    public static FileParse createFileParse(ParseType parseType) {
+        switch (parseType) {
             case CSV:
                 return FileParseHolder.csvFileParse;
             case EXCEL:

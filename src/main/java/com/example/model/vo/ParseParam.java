@@ -1,5 +1,6 @@
 package com.example.model.vo;
 
+import com.example.constant.ParseType;
 import com.example.parse.BusinessDefineParse;
 import com.example.parse.error.DefaultErrorRecord;
 import com.example.parse.error.ErrorRecord;
@@ -28,6 +29,8 @@ public class ParseParam {
     private ErrorRecord errorRecord;
 
     private CellFormat cellFormat;
+
+    private ParseType parserName;
 
     public ParseParam() {
         errorRecord = new DefaultErrorRecord(new StringBuilder(""));
@@ -65,6 +68,11 @@ public class ParseParam {
 
     public ParseParam setCellFormat(CellFormat cellFormat) {
         this.cellFormat = cellFormat;
+        return this;
+    }
+
+    public ParseParam setParserName(ParseType parserName) {
+        this.parserName = parserName;
         return this;
     }
 }

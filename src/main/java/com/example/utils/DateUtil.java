@@ -21,6 +21,8 @@ public class DateUtil {
         Map<Pattern, String> map = new HashMap();
         map.put(Pattern.compile("\\d{4}/\\d{1,2}/\\d{1,2}"), "yyyy/MM/dd");
         map.put(Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}"), "yyyy-MM-dd");
+        map.put(Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}"), "yyyy-MM-dd");
+        map.put(Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}\\s{1,2}\\d{2}:\\d{2}:\\d{2}"), "yyyy-MM-dd HH:mm:ss");
         map.put(Pattern.compile("\\d{4}\\.\\d{1,2}\\.\\d{1,2}"), "yyyy.MM.dd");
         map.put(Pattern.compile("\\d{4}/\\d{1,2}/\\d{1,2}\\s{1}\\d{2}:\\d{2}:\\d{2}"), "yyyy/MM/dd HH:mm:ss");
         REGEX_MAP = Collections.unmodifiableMap(map);
