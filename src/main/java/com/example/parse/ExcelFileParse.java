@@ -2,9 +2,6 @@ package com.example.parse;
 
 import com.example.exception.FileParseException;
 import com.example.model.vo.ParseParam;
-import com.example.parse.error.DefaultErrorRecord;
-import com.example.parse.error.ErrorRecord;
-import com.example.utils.DateUtil;
 import com.example.utils.ExcelUtil;
 import com.example.utils.FileParseCommonUtil;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -69,8 +66,7 @@ public class ExcelFileParse implements FileParse {
             Map<String, Method> fieldSetterMap = parseParam.getFieldSetterMap();
             for (Map.Entry<String, Method> entry : fieldSetterMap.entrySet()) {
                 Integer column = FileParseCommonUtil.EXCEL_COLUMN.get(entry.getKey());
-//                String cellValue = getCellValue(row, column);
-                String cellValue = row.getCell(column).getStringCellValue();
+                String cellValue = getCellValue(row, column);
                 if (parseParam.getCellFormat() != null) {
                     cellValue = parseParam.getCellFormat().format(entry.getKey(), cellValue);
                 }
@@ -97,15 +93,17 @@ public class ExcelFileParse implements FileParse {
             case NUMERIC:
                 if (HSSFDateUtil.isCellDateFormatted(cell)) {
                     Date date = cell.getDateCellValue();
-                    date.getTime();
+                    // 转换为 long 时间
+                    cellValue = "L" + date.getTime();
                 } else {
                     cellValue = String.valueOf(cell.getNumericCellValue());
                 }
                 break;
             case BOOLEAN:
-                cell.getBooleanCellValue();
+                cellValue = String.valueOf(cell.getBooleanCellValue());
+                break;
             case FORMULA:
-                cell.getCellFormula();
+                cellValue = String.valueOf(cell.getCellFormula());
                 break;
             case BLANK:
                 break;

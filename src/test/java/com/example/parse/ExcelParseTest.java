@@ -36,10 +36,10 @@ public class ExcelParseTest extends ParseCommonTest {
 
     @Test
     public void testExcelType() {
-        String filePath = "file/test2007.xlsx";
+        String filePath = "file/data-type.xlsx";
         FileParse fileParse = FileParseCreateor.createFileParse(FileParseCommonUtil.findParserType(filePath));
-        List<ExcelTypeVo> reflectVoList = fileParse.parseFile(filePath, ExcelTypeVo.class, createExcelTypeParam());
-        Assert.assertEquals(6, reflectVoList.size());
+        List<ExcelTypeVo> excelTypeVos = fileParse.parseFile(filePath, ExcelTypeVo.class, createExcelTypeParam());
+        Assert.assertEquals(6, excelTypeVos.size());
     }
 
     public ParseParam createExcelTypeParam() {

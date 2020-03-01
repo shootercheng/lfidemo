@@ -64,8 +64,7 @@ public class FileParseCommonUtil {
         try {
             method.invoke(t, typeValue);
         } catch (Exception e) {
-//            throw new FileParseException("invoke value error", e);
-            LOGGER.error("invoke value error {}", e);
+            throw new FileParseException("invoke value error", e);
         }
     }
 
@@ -88,13 +87,11 @@ public class FileParseCommonUtil {
         ParseType parseTypeFind = findParserType(filePath);
         // 如果参数 说明要 EasyExcel 解析就使用 Easy Excel
         if (ParseType.EXCEL.name().equals(parseTypeFind.name())) {
-            if (parseParam.getParserName().name().equals(ParseType.EASYEXCEL.name())) {
+            if (ParseType.EASYEXCEL.name().equals(parseParam.getParseType().name())) {
                 return ParseType.EASYEXCEL;
             }
-            return parseTypeFind;
-        } else {
-            return parseTypeFind;
         }
+        return parseTypeFind;
     }
 
 

@@ -12,8 +12,7 @@ public class EvenExcel implements HSSFListener {
     private SSTRecord sstrec;
 
     // 实现接口方法
-    public void processRecord(Record record)
-    {
+    public void processRecord(Record record) {
         switch (record.getSid()) {
             case BOFRecord.sid: // Beginning Of File
                 BOFRecord bof = (BOFRecord) record;
@@ -47,7 +46,9 @@ public class EvenExcel implements HSSFListener {
                 break;
             case LabelSSTRecord.sid:
                 LabelSSTRecord lrec = (LabelSSTRecord) record;
-                System.out.println("String cell value:" + sstrec.getString(lrec.getSSTIndex()));
+                System.out.println("Row:" + lrec.getRow() + "," +
+                                "Column:" + lrec.getColumn() + "," +
+                        "String cell value:" + sstrec.getString(lrec.getSSTIndex()));
                 break;
         }
     }

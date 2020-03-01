@@ -30,7 +30,7 @@ public class ParseParam {
 
     private CellFormat cellFormat;
 
-    private ParseType parserName;
+    private ParseType parseType;
 
     public ParseParam() {
         errorRecord = new DefaultErrorRecord(new StringBuilder(""));
@@ -71,8 +71,8 @@ public class ParseParam {
         return this;
     }
 
-    public ParseParam setParserName(ParseType parserName) {
-        this.parserName = parserName;
+    public ParseParam setParseType(ParseType parseType) {
+        this.parseType = parseType;
         return this;
     }
 }
