@@ -16,7 +16,7 @@ public class BatchInsertUtil {
             return 0;
         }
         int listSize = inputList.size();
-        if (listSize < batchNum) {
+        if (listSize <= batchNum) {
             return function.apply(inputList);
         }
         int sum = 0;

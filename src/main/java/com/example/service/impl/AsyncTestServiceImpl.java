@@ -24,4 +24,26 @@ public class AsyncTestServiceImpl implements AsyncTestService {
         }
         LOGGER.info("end test.....");
     }
+
+    @Override
+    public void testNotSync() {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("time :" + System.currentTimeMillis());
+    }
+
+    @Override
+    public void testSync() {
+        synchronized (AsyncTestServiceImpl.class) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("time :" + System.currentTimeMillis());
+    }
 }

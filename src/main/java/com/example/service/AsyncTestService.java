@@ -7,4 +7,11 @@ package com.example.service;
 public interface AsyncTestService {
 
     void asyncTest();
+
+    void testNotSync();
+
+    /**
+     * testSync
+     */
+    void testSync();
 }

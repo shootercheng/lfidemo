@@ -43,5 +43,13 @@ public class CommonController {
         return "success";
     }
 
-
+    @RequestMapping(value = "/test/sync", method = RequestMethod.GET)
+    public String testSync(String type) {
+        if ("1".equals(type)) {
+            asyncTestService.testNotSync();
+        } else {
+            asyncTestService.testSync();
+        }
+        return "success";
+    }
 }

@@ -12,7 +12,7 @@ import java.io.IOException;
  * @author chengdu
  * @date 2019/7/28.
  */
-@WebFilter(filterName = "myFilter", urlPatterns = {"/*"})
+//@WebFilter(filterName = "myFilter", urlPatterns = {"/*"})
 public class MyFilter implements Filter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MyFilter.class);

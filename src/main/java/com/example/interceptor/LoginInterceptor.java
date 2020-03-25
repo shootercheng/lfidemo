@@ -25,6 +25,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginInterceptor.class);
 
+    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         LOGGER.info("[Interceptor] {}", "LoginInterceptor");
         String uri = request.getRequestURI();
@@ -53,10 +54,12 @@ public class LoginInterceptor implements HandlerInterceptor {
         return false;
     }
 
+    @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
         LOGGER.info("[Interceptor] {}, postHandle", "LoginInterceptor");
     }
 
+    @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
         LOGGER.info("[Interceptor] {}, afterCompletion", "LoginInterceptor");
     }

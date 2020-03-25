@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @date 2019/7/29.
  */
 
-@Configuration
+//@Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InterceptorConfig.class);
@@ -23,6 +23,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Autowired
     private LoginInterceptor loginInterceptor;
 
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         LOGGER.info("init interceptors ");
         registry.addInterceptor(myInterceptor).addPathPatterns("/**");
