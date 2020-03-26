@@ -33,4 +33,6 @@ public interface BatchLabelMapper {
     int countTbSum(Map<String, Object> map);
 
     Map<String, List<Object>> selectMap(Map<String, Object> map, List<Map<String, Integer>> listMap);
+    List<String> selectList(@Param(value = "map") Map<String, Object> map,
+                            @Param(value = "listMap") List<Map<String, Integer>> listMap);
 }

@@ -13,12 +13,13 @@ import java.util.Map;
  * @Time: 15:20
  */
 @Repository(value = "batchlabel")
+public interface BatchLabelMapper {
     /**
      * getById
      * @param tableName tableName
      * @param id id
      * @return Label
-     */public interface BatchLabelMapper {
+     */
     Label getById(@Param("tableName")String tableName, @Param("id") long id);
 
     /**

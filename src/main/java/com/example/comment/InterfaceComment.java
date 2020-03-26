@@ -1,5 +1,7 @@
 package com.example.comment;
 
+import com.example.exception.FileParseException;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -18,13 +20,16 @@ public class InterfaceComment {
 
     private static final String CRLF = System.lineSeparator();
 
-    private static List<String> exculdeAnnnList = Arrays.asList(
+    /**
+     * 注解有括号跳过
+     */
+    private static List<String> exculdeAnnoList = Arrays.asList(
             "@Repository"
     );
 
     private static final String METHOD_PARAM = "\\(.*\\)";
 
-    private static Pattern methodPattern = Pattern.compile(METHOD_PARAM);
+    private static Pattern methodPattern = Pattern.compile(METHOD_PARAM, Pattern.DOTALL);
 
     private static Pattern paramAnnoPattern = Pattern.compile("@.*?\\)");
 
@@ -39,13 +44,13 @@ public class InterfaceComment {
                 resultList.add(curLine);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new FileParseException("read file lines error ", e);
         }
         return resultList;
     }
 
     public static boolean isSkip(String line) {
-        for (String anno : exculdeAnnnList) {
+        for (String anno : exculdeAnnoList) {
             if (line.contains(anno)) {
                 return true;
             }
@@ -77,6 +82,9 @@ public class InterfaceComment {
         }
         // remove 左右 括号
         params = params.substring(1, params.length() - 1);
+        if (params.trim().length() == 0) {
+            return new ArrayList<>();
+        }
         // Map<String, List<Object>> map, Map<String, List<Map<String, Integer>>> imap
         if (params.indexOf("Map") != -1) {
             params = diamondPattern.matcher(params).replaceAll("");
@@ -103,42 +111,53 @@ public class InterfaceComment {
     }
 
     public static void main(String[] args) {
-        String filePath = "E:\\Github\\lfidemo\\file\\mapper\\BatchLabelMapper.java";
+        String filePath = "file/mapper/TestOne.java";
+        String commentPath = "file/mapper/TestOne_Comment.java";
+//        String commentPath = "file/mapper/TestOne.java";
         List<String> readLines = readAllLines(filePath, StandardCharsets.UTF_8);
-        int j = 0;
         StringBuilder commentResult = new StringBuilder();
-        for (int i = 0; i < readLines.size() - 1; i++) {
-            String codeLine = readLines.get(i + 1);
-            // 匹配参数
-            Matcher matcher = methodPattern.matcher(codeLine);
-            if (matcher.find() && !isSkip(codeLine)) {
-                if (j > 0) {
-                    commentResult.append(CRLF);
+        for (int i = 0; i < readLines.size(); i++) {
+            String codeLine = readLines.get(i);
+            // 匹配方法
+            if (codeLine.contains("(") && !isSkip(codeLine)) {
+                if (!codeLine.endsWith(";")) {
+                    // find method end ;
+                    for (int j = i + 1; j < readLines.size(); j++) {
+                        codeLine = codeLine + CRLF + readLines.get(j);
+                        i++;
+                        if (codeLine.endsWith(";")) {
+                            break;
+                        }
+                    }
+                    // 如果没有找到方法结束，直接报错
+                    if (!codeLine.endsWith(";")) {
+                        throw new IllegalArgumentException("java file format error");
+                    }
                 }
-                StringBuilder stringBuilder = new StringBuilder(INDENT).append("/**").append(CRLF);
-                String params = matcher.group();
-                String methodName = matcher.replaceAll("").trim();
-                if (methodName.endsWith(";")) {
-                    methodName = methodName.substring(0, methodName.length() - 1);
+                Matcher matcher = methodPattern.matcher(codeLine);
+                if (matcher.find()) {
+                    StringBuilder stringBuilder = new StringBuilder(INDENT).append("/**").append(CRLF);
+                    String params = matcher.group();
+                    String methodName = matcher.replaceAll("").trim();
+                    if (methodName.endsWith(";")) {
+                        methodName = methodName.substring(0, methodName.length() - 1);
+                    }
+                    String[] nameTypeArr = methodName.split(" ");
+                    String returnType = findType(nameTypeArr);
+                    String name = nameTypeArr[nameTypeArr.length - 1];
+                    stringBuilder.append(INDENT).append(" * ").append(name).append(CRLF);
+                    List<String> paramList = findParamList(params);
+                    for (String param : paramList) {
+                        stringBuilder.append(INDENT).append(" * @param ")
+                                .append(param).append(" ").append(param).append(CRLF);
+                    }
+                    stringBuilder.append(INDENT).append(" * @return ").append(returnType).append(CRLF);
+                    stringBuilder.append(INDENT).append(" */").append(CRLF);
+                    commentResult.append(stringBuilder);
                 }
-                String[] nameTypeArr = methodName.split(" ");
-                String returnType = findType(nameTypeArr);
-                String name = nameTypeArr[nameTypeArr.length - 1];
-                stringBuilder.append(INDENT).append(" * ").append(name).append(CRLF);
-                List<String> paramList = findParamList(params);
-                for (String param : paramList) {
-                    stringBuilder.append(INDENT).append(" * @param ")
-                            .append(param).append(" ").append(param).append(CRLF);
-                }
-                stringBuilder.append(INDENT).append(" * @return ").append(returnType).append(CRLF);
-                stringBuilder.append(INDENT).append(" */");
-                commentResult.append(stringBuilder);
-                j++;
             }
-            commentResult.append(readLines.get(i)).append(CRLF);
+            commentResult.append(codeLine).append(CRLF);
         }
-        commentResult.append(readLines.get(readLines.size() - 1));
-        String commentPath = "E:\\Github\\lfidemo\\file\\mapper\\BatchLabelMapper_Comment.java";
         saveCodeComment(commentResult.toString(), commentPath);
     }
 }
