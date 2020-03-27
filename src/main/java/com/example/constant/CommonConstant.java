@@ -32,4 +32,9 @@ public class CommonConstant {
     public static final String UTF16 = "UTF-16";
 
     public static final String UNICODE = "Unicode";
+
+
+    public static final String INDENT = "    ";
+
+    public static final String CRLF = System.lineSeparator();
 }

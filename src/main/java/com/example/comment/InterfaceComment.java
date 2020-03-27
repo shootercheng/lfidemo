@@ -11,14 +11,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.example.constant.CommonConstant.CRLF;
+import static com.example.constant.CommonConstant.INDENT;
+
 /**
  * @author James
  */
 public class InterfaceComment {
-
-    private static final String INDENT = "    ";
-
-    private static final String CRLF = System.lineSeparator();
 
     /**
      * 注解有括号跳过
