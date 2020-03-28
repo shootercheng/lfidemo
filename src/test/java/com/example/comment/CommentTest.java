@@ -1,7 +1,11 @@
 package com.example.comment;
 
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,5 +34,14 @@ public class CommentTest {
         if (matcher.find()) {
             System.out.println(matcher.group());
         }
+    }
+
+    @Test
+    public void testField() throws FileNotFoundException {
+        String filePath = "src\\main\\java\\com\\example\\constant\\CommonConstant.java";
+        CompilationUnit cu = StaticJavaParser.parse(new File(filePath));
+        JavaParserComment.DocComment docComment = new JavaParserComment.DocComment();
+        docComment.visit(cu, null);
+        System.out.println(cu.toString());
     }
 }

@@ -2,9 +2,10 @@ package com.example.comment;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 import java.io.File;
@@ -23,17 +24,25 @@ public class JavaParserComment {
         String filePath = "file/mapper/TestOne.java";
         String commentPath = "file/mapper/TestOne_Parser.java";
         CompilationUnit cu = StaticJavaParser.parse(new File(filePath));
-        MethodComment methodComment = new MethodComment();
-        methodComment.visit(cu, null);
+        DocComment docComment = new DocComment();
+        docComment.visit(cu, null);
         InterfaceComment.saveCodeComment(cu.toString(), commentPath);
     }
 
-    private static class MethodComment extends VoidVisitorAdapter<Void> {
+    public static class DocComment extends VoidVisitorAdapter<Void> {
         @Override
         public void visit(MethodDeclaration md, Void arg) {
             super.visit(md, arg);
             if (!md.getJavadoc().isPresent()) {
                 addMethodComment(md);
+            }
+        }
+
+        @Override
+        public void visit(FieldDeclaration field, Void arg) {
+            super.visit(field, arg);
+            if (!field.getJavadoc().isPresent()) {
+                addFieldComment(field);
             }
         }
     }
@@ -53,7 +62,18 @@ public class JavaParserComment {
         }
         stringBuilder.append(INDENT).append(" * @return ")
                 .append(returnType).append(CRLF);
-        stringBuilder.append(INDENT).append(" */").append(CRLF);
+//        stringBuilder.append(INDENT).append(" */").append(CRLF);
         md.setJavadocComment(stringBuilder.toString());
+    }
+
+    private static void addFieldComment(FieldDeclaration field) {
+        List<VariableDeclarator> variableDeclarators = field.getVariables();
+        if (variableDeclarators.size() > 0) {
+            String variableName = variableDeclarators.get(0).getNameAsString();
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(INDENT).append(" * ").append(variableName).append(CRLF);
+//            stringBuilder.append(INDENT).append(" */").append(CRLF);
+            field.setJavadocComment(stringBuilder.toString());
+        }
     }
 }
