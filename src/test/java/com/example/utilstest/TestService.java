@@ -1,6 +1,9 @@
 package com.example.utilstest;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,5 +27,15 @@ public class TestService {
             list.add(num + " " + rowData);
         }
         return list;
+    }
+
+    @Test
+    public void testMap() {
+        Map<Integer, String> map = new HashMap<>(16);
+        map.put(1, "A");
+        map.put(2, "B");
+        map.put(3, "C");
+        map.remove(1);
+        System.out.println(map);
     }
 }

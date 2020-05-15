@@ -1,8 +1,6 @@
 package com.example.proxy.test;
 
 import com.example.proxy.jdk.MapperProxyFactory;
-import com.example.proxy.service.CalService;
-import com.example.proxy.service.CalServiceImpl;
 import com.example.proxy.sql.MySqlMapper;
 import org.junit.Test;
 
