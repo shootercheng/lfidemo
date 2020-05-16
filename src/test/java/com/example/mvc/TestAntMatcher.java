@@ -1,5 +1,6 @@
 package com.example.mvc;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.AntPathMatcher;
 
@@ -13,9 +14,9 @@ public class TestAntMatcher {
         AntPathMatcher antPathMatcher = new AntPathMatcher();
         String lookUpPath = "/resources/framework/bootstrap-3.0.0/css/bootstrap.min.css";
         boolean matches = antPathMatcher.match("/**/*.css", lookUpPath);
-        System.out.println(matches);
+        Assert.assertTrue(matches);
         boolean matches2 = antPathMatcher.match("/**/*.jpg", "/resources/framework/1.jpg");
-        System.out.println(matches2);
+        Assert.assertTrue(matches2);
 //        "/**/*.jpg",
 //        "/**/*.png",
 //        "/**/*.html",

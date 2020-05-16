@@ -173,10 +173,11 @@ public class ListTest {
         }
         System.out.println("link list foreach time :" + (System.currentTimeMillis() - startTime));
         startTime = System.currentTimeMillis();
-        for (int i = 0; i < size; i++) {
+       for (int i = 0; i < size; i++) {
             temp = objectList.get(i);
         }
         System.out.println("array list get time :" + (System.currentTimeMillis() - startTime));
+        startTime = System.currentTimeMillis();
         for (String s : objectList) {
             temp = s;
         }
