@@ -30,4 +30,25 @@ public class BatchInsertUtil {
         sum = sum + function.apply(leftList);
         return sum;
     }
+
+    /**
+     * 在循环中插入
+     * @param inputList
+     * @param function
+     * @param batchNum
+     * @param <T>
+     * @return
+     */
+    public static <T> int batchInsertInLoop(List<T> inputList, Function<List<T>, Integer> function, int batchNum) {
+        if (CollectionUtils.isEmpty(inputList)) {
+            return 0;
+        }
+        int listSize = inputList.size();
+        if (listSize == batchNum) {
+            int sum = function.apply(inputList);
+            inputList.clear();
+            return sum;
+        }
+        return 0;
+    }
 }

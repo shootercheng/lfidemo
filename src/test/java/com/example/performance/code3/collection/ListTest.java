@@ -2,6 +2,7 @@ package com.example.performance.code3.collection;
 
 import org.junit.Test;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Random;
 /**
  * @author James
  */
-public class ListTest {
+public class ListTest implements Serializable {
 
     /**
      * 指定 ArrayList 大小
