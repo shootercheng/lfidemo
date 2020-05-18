@@ -14,15 +14,18 @@ public class BigFileTask implements Callable<List<File>> {
 
     private List<String> filePaths;
 
-    public BigFileTask(List<String> filePaths) {
+    private Long maxFileSize;
+
+    public BigFileTask(List<String> filePaths, Long maxFileSize) {
         this.filePaths = filePaths;
+        this.maxFileSize = maxFileSize;
     }
 
     @Override
-    public List<File> call() throws Exception {
+    public List<File> call() {
         List<File> result = new ArrayList<>(10000);
         for (String filePath : filePaths) {
-            FileUtil.findFiles(filePath, result);
+            FileUtil.findMaxSizeFiles(filePath, result, maxFileSize);
         }
         return result;
     }

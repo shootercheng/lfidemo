@@ -22,7 +22,7 @@ import java.util.concurrent.Future;
  * @author James
  */
 public class FileTest {
-    private static final int MAX_FILE_SIZE = 500 * 1024 * 1024;
+    private static final long MAX_FILE_SIZE = 500 * 1024 * 1024;
 
     @Test
     public void testFileSize() {
@@ -35,7 +35,7 @@ public class FileTest {
 
     @Test
     public void testFindFiles() {
-        String filePath = "D:/Data/conet";
+        String filePath = "E:/BaiduNetdiskDownload";
         List<File> fileList = new ArrayList<>();
         FileUtil.findFiles(filePath, fileList);
         for (File file : fileList) {
@@ -48,12 +48,10 @@ public class FileTest {
         long startTime = System.currentTimeMillis();
         String filePath = "D:/";
         List<File> fileList = new ArrayList<>();
-        FileUtil.findFiles(filePath, fileList);
+        FileUtil.findMaxSizeFiles(filePath, fileList, MAX_FILE_SIZE);
         for (File file : fileList) {
             long fileSize = file.length();
-            if (fileSize > MAX_FILE_SIZE) {
-                System.out.println(file.getAbsolutePath() + "_" + fileSize);
-            }
+            System.out.println(file.getAbsolutePath() + "_" + fileSize);
         }
         System.out.println("time : " + (System.currentTimeMillis() - startTime));
     }
@@ -87,6 +85,9 @@ public class FileTest {
         String filePath = "D:/";
         List<String> filePaths = findOneLevelPath(filePath);
         int filePathSize = filePaths.size();
+        if (filePathSize < threadNum) {
+            threadNum = filePathSize;
+        }
         // 每个线程查找文件数据量
         int filePathNum;
         if (filePathSize % threadNum == 0) {
@@ -100,14 +101,14 @@ public class FileTest {
             threadFilePath.add(fpath);
             if (threadFilePath.size() == filePathNum) {
                 List<String> threadPathParam = new ArrayList<>(threadFilePath);
-                BigFileTask bigFileTask = new BigFileTask(threadPathParam);
+                BigFileTask bigFileTask = new BigFileTask(threadPathParam, MAX_FILE_SIZE);
                 bigFileTasks.add(bigFileTask);
                 threadFilePath.clear();
             }
         }
         if (threadFilePath.size() > 0) {
             List<String> threadPathParam = new ArrayList<>(threadFilePath);
-            BigFileTask bigFileTask = new BigFileTask(threadPathParam);
+            BigFileTask bigFileTask = new BigFileTask(threadPathParam, MAX_FILE_SIZE);
             bigFileTasks.add(bigFileTask);
         }
         Assert.assertEquals(threadNum, bigFileTasks.size());

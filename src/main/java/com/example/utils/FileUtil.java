@@ -66,9 +66,10 @@ public class FileUtil {
     }
 
     public static void copy(String sourcePath, String targetPath) throws IOException {
-        InputStream inputStream = new FileInputStream(sourcePath);
-        OutputStream outputStream = new FileOutputStream(targetPath);
-        copy(inputStream, outputStream);
+        try (InputStream inputStream = new FileInputStream(sourcePath);
+             OutputStream outputStream = new FileOutputStream(targetPath)) {
+            copy(inputStream, outputStream);
+        }
     }
 
     public static void copyNio(String sourcePath, String targetPath) throws IOException {
@@ -81,6 +82,31 @@ public class FileUtil {
                 byteBuffer.flip();
                 outputChannel.write(byteBuffer);
                 byteBuffer.clear();
+            }
+        }
+    }
+
+    public static void findMaxSizeFiles(String filePath, List<File> files, long maxFileSize) {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            return;
+        }
+        if (file.isFile()) {
+            long fileSize = file.length();
+            if (fileSize > maxFileSize) {
+                files.add(file);
+            }
+            return;
+        }
+        if (file.isDirectory()) {
+            File[] fileArr = file.listFiles();
+            if (fileArr == null || fileArr.length == 0) {
+//                System.out.println(file);
+                return;
+            }
+            for (File curFile : fileArr) {
+                String curPath = curFile.getAbsolutePath();
+                findMaxSizeFiles(curPath, files, maxFileSize);
             }
         }
     }
