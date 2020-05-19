@@ -25,7 +25,7 @@ public class BigFileTask implements Callable<List<File>> {
     public List<File> call() {
         List<File> result = new ArrayList<>(10000);
         for (String filePath : filePaths) {
-            FileUtil.findMaxSizeFiles(filePath, result, maxFileSize);
+            FileUtil.findBigSizeFiles(filePath, result, maxFileSize);
         }
         return result;
     }

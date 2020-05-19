@@ -48,7 +48,7 @@ public class FileTest {
         long startTime = System.currentTimeMillis();
         String filePath = "D:/";
         List<File> fileList = new ArrayList<>();
-        FileUtil.findMaxSizeFiles(filePath, fileList, MAX_FILE_SIZE);
+        FileUtil.findBigSizeFiles(filePath, fileList, MAX_FILE_SIZE);
         for (File file : fileList) {
             long fileSize = file.length();
             System.out.println(file.getAbsolutePath() + "_" + fileSize);

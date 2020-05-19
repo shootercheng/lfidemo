@@ -1,11 +1,9 @@
 package com.example.utils;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.util.Assert;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -86,7 +84,7 @@ public class FileUtil {
         }
     }
 
-    public static void findMaxSizeFiles(String filePath, List<File> files, long maxFileSize) {
+    public static void findBigSizeFiles(String filePath, List<File> files, long maxFileSize) {
         File file = new File(filePath);
         if (!file.exists()) {
             return;
@@ -106,7 +104,7 @@ public class FileUtil {
             }
             for (File curFile : fileArr) {
                 String curPath = curFile.getAbsolutePath();
-                findMaxSizeFiles(curPath, files, maxFileSize);
+                findBigSizeFiles(curPath, files, maxFileSize);
             }
         }
     }
