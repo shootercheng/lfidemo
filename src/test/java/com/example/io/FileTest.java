@@ -85,6 +85,10 @@ public class FileTest {
         String filePath = "D:/";
         List<String> filePaths = findOneLevelPath(filePath);
         int filePathSize = filePaths.size();
+        if (filePathSize == 0) {
+            System.out.println("file path list is empty.....");
+            return;
+        }
         if (filePathSize < threadNum) {
             threadNum = filePathSize;
         }
