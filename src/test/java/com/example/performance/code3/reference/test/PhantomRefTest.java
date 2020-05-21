@@ -19,7 +19,7 @@ public class PhantomRefTest {
     public static void main(String[] args) throws InterruptedException {
         TestBean testBean = new TestBean(1L, "James");
         ReferenceQueue<TestBean> referenceQueue = new ReferenceQueue<>();
-        // 如果对象回收则静茹引用队列 reference queue
+        // 如果对象回收则进入引用队列 reference queue
         PhantomReference<TestBean> softReference = new PhantomReference<>(testBean, referenceQueue);
         System.out.println("phantom reference get :" + softReference.get());
         CheckRefQueueThread checkRefQueueThread = new CheckRefQueueThread(referenceQueue);

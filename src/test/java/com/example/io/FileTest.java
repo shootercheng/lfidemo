@@ -160,4 +160,20 @@ public class FileTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testSplitFile() throws IOException {
+        String filePath = "D:/Data/book/Java/JVM/实战Java高并发程序设计（第2版） .pdf";
+        String targetPath = "split";
+        int partSize = 5 * 1024 * 1024;
+        FileUtil.splitFile(filePath, targetPath, partSize);
+    }
+
+    @Test
+    public void mergeSplitFile() throws IOException {
+        String filePath = "split";
+        String targetPath = "D:/Data/book/Java/JVM/merge/实战Java高并发程序设计（第2版） .pdf";
+        int partSize = 5 * 1024 * 1024;
+        FileUtil.mergeFile(filePath, targetPath, partSize);
+    }
 }

@@ -16,7 +16,7 @@ public class WeakHashMapTest {
     private static final int SIZE = 30000;
 
     /**
-     * 内存不够时， GC 回收被没有被引用的数据
+     * 内存不够时， GC 回收没有被引用的数据
      */
     public static void test1() {
         Map<Integer, TestBean> weakHashMap = new WeakHashMap<>(SIZE);
@@ -48,8 +48,8 @@ public class WeakHashMapTest {
     }
 
     public static void main(String[] args) {
-//        test1();
+        test1();
 //        test2();
-        test3();
+//        test3();
     }
 }

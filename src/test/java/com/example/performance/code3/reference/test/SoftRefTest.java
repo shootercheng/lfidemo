@@ -19,7 +19,7 @@ public class SoftRefTest {
     public static void main(String[] args){
         TestBean testBean = new TestBean(1L, "James");
         ReferenceQueue<TestBean> referenceQueue = new ReferenceQueue<>();
-        // 如果对象回收则静茹引用队列 reference queue
+        // 如果对象回收则进入用队列 reference queue
         SoftReference<TestBean> softReference = new SoftReference<>(testBean, referenceQueue);
         CheckRefQueueThread checkRefQueueThread = new CheckRefQueueThread(referenceQueue);
         // 开启线程监控对象回收情况

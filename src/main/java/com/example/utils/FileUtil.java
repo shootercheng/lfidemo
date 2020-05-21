@@ -1,5 +1,7 @@
 package com.example.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import java.io.File;
@@ -8,7 +10,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.List;
 
@@ -16,6 +20,8 @@ import java.util.List;
  * @author James
  */
 public class FileUtil {
+    public static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
+
     public static final int BUFFER_SIZE = 1024;
 
     public static void findFiles(String filePath, List<File> files) {
@@ -107,5 +113,113 @@ public class FileUtil {
                 findBigSizeFiles(curPath, files, maxFileSize);
             }
         }
+    }
+
+
+    /**
+     *
+     * @param inputFilePath
+     * @param outPath
+     * @param partSize
+     * @throws IOException
+     */
+    public static void splitFile(String inputFilePath, String outPath, int partSize) throws IOException {
+        File file = new File(inputFilePath);
+        if (!file.exists() || !file.isFile()) {
+            LOGGER.error("file not exists {}", inputFilePath);
+            return;
+        }
+        File targetFile = new File(outPath);
+        if (!targetFile.isDirectory()) {
+            LOGGER.error("target file is not directory {}", outPath);
+            return;
+        }
+        InputStream in = new FileInputStream(file);
+        String fileName = file.getName().trim();
+        byte[] buffer = new byte[partSize];
+        int bytesRead = -1;
+        int part = 0;
+        while ((bytesRead = in.read(buffer)) != -1) {
+            String targetFilePath = outPath + File.separator + part + " " + fileName;
+            try (OutputStream out = new FileOutputStream(targetFilePath)) {
+                out.write(buffer, 0, bytesRead);
+                out.flush();
+            }
+            part++;
+        }
+    }
+
+    public static void mergeFile(String inputPath, String outputFilePath, int partSize) throws IOException {
+        File file = new File(inputPath);
+        if (!file.isDirectory()) {
+            LOGGER.error("target file is not directory {}", inputPath);
+            return;
+        }
+        outputFilePath = outputFilePath + "_keep";
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(outputFilePath, "rw")) {
+            File[] files = file.listFiles();
+            for (File partFile : files) {
+                String name = partFile.getName();
+                String[] nameArr = name.split(" ");
+                int index = Integer.valueOf(nameArr[0]);
+                String curFilePath = partFile.getAbsolutePath();
+                try (InputStream inputStream = new FileInputStream(curFilePath)) {
+                    int length = inputStream.available();
+                    byte[] bytes = new byte[length];
+                    inputStream.read(bytes);
+                    // 计算偏移量
+                    long offset = index * partSize;
+                    randomAccessFile.seek(offset);
+                    randomAccessFile.write(bytes);
+                }
+            }
+        }
+        renameFile(outputFilePath);
+    }
+
+    public static void mergeNioFile(String inputPath, String outputFilePath, int partSize) throws IOException {
+        File file = new File(inputPath);
+        if (!file.isDirectory()) {
+            return;
+        }
+        outputFilePath = outputFilePath + "_keep";
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(outputFilePath, "rw");
+             FileChannel fileChannel = randomAccessFile.getChannel()) {
+            File[] files = file.listFiles();
+            for (File partFile : files) {
+                String name = partFile.getName();
+                String[] nameArr = name.split(" ");
+                int index = Integer.valueOf(nameArr[0]) - 1;
+                String curFilePath = partFile.getAbsolutePath();
+                try (InputStream inputStream = new FileInputStream(curFilePath)) {
+                    int length = inputStream.available();
+                    byte[] bytes = new byte[length];
+                    inputStream.read(bytes);
+                    // 计算偏移量
+                    long offset = index * partSize;
+                    MappedByteBuffer mappedByteBuffer = fileChannel.map(FileChannel.MapMode.READ_WRITE, offset, bytes.length);
+                    mappedByteBuffer.put(bytes);
+                    mappedByteBuffer.clear();
+                }
+            }
+        }
+        // 文件重命名
+        renameFile(outputFilePath);
+    }
+
+    private static boolean renameFile(String outputFilePath) {
+        // 文件重命名
+        String orgFileName = outputFilePath.substring(0, outputFilePath.length() - "_keep".length());
+        File keepFile = new File(outputFilePath);
+        if (!keepFile.isFile()) {
+            LOGGER.info("output path is not file {}", outputFilePath);
+            return false;
+        }
+        File newFile = new File(orgFileName);
+        if (newFile.exists()) {
+            LOGGER.info("delete exists file {}", orgFileName);
+            newFile.delete();
+        }
+        return keepFile.renameTo(newFile);
     }
 }
