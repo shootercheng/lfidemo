@@ -131,7 +131,7 @@ public class FileUtil {
         }
         File targetFile = new File(outPath);
         if (!targetFile.isDirectory()) {
-            LOGGER.error("target file is not directory {}", outPath);
+            LOGGER.error("out path is not directory {}", outPath);
             return;
         }
         InputStream in = new FileInputStream(file);
@@ -152,7 +152,7 @@ public class FileUtil {
     public static void mergeFile(String inputPath, String outputFilePath, int partSize) throws IOException {
         File file = new File(inputPath);
         if (!file.isDirectory()) {
-            LOGGER.error("target file is not directory {}", inputPath);
+            LOGGER.error("input path is not directory {}", inputPath);
             return;
         }
         outputFilePath = outputFilePath + "_keep";
@@ -162,8 +162,7 @@ public class FileUtil {
                 String name = partFile.getName();
                 String[] nameArr = name.split(" ");
                 int index = Integer.valueOf(nameArr[0]);
-                String curFilePath = partFile.getAbsolutePath();
-                try (InputStream inputStream = new FileInputStream(curFilePath)) {
+                try (InputStream inputStream = new FileInputStream(partFile)) {
                     int length = inputStream.available();
                     byte[] bytes = new byte[length];
                     inputStream.read(bytes);

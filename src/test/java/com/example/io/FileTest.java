@@ -165,6 +165,10 @@ public class FileTest {
     public void testSplitFile() throws IOException {
         String filePath = "D:/Data/book/Java/JVM/实战Java高并发程序设计（第2版） .pdf";
         String targetPath = "split";
+        File file = new File(targetPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
         int partSize = 5 * 1024 * 1024;
         FileUtil.splitFile(filePath, targetPath, partSize);
     }
@@ -172,7 +176,12 @@ public class FileTest {
     @Test
     public void mergeSplitFile() throws IOException {
         String filePath = "split";
-        String targetPath = "D:/Data/book/Java/JVM/merge/实战Java高并发程序设计（第2版） .pdf";
+        String fileDir = "D:/Data/book/Java/JVM/merge";
+        File dirFile = new File(fileDir);
+        if (!dirFile.exists()) {
+            dirFile.mkdirs();
+        }
+        String targetPath = fileDir + File.separator + "实战Java高并发程序设计（第2版） .pdf";
         int partSize = 5 * 1024 * 1024;
         FileUtil.mergeFile(filePath, targetPath, partSize);
     }
