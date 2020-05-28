@@ -1,6 +1,7 @@
 package com.example.test;
 
 
+import com.example.threadsafe.ReenLockVolatileTest;
 import com.example.threadsafe.VolatileSafeTest;
 
 import java.util.concurrent.ExecutorService;
@@ -22,7 +23,8 @@ public class ThreadSafeTest {
 //                    VolatileTest.testVolatile();
 //                    AtomicBooleanTest.testAtomic();
 //                    VolatileSafeSyncTest.testSyncVolatile();
-                    VolatileSafeTest.testSafeVolatile();
+//                    VolatileSafeTest.testSafeVolatile();
+                    ReenLockVolatileTest.testThreadSafe();
                 }
             });
         }

@@ -4,8 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -220,5 +223,13 @@ public class FileUtil {
             newFile.delete();
         }
         return keepFile.renameTo(newFile);
+    }
+
+    public static byte[] readFileByte(String filePath) throws IOException {
+        InputStream inputStream = new FileInputStream(filePath);
+        int size = inputStream.available();
+        byte[] bytes = new byte[size];
+        inputStream.read(bytes);
+        return bytes;
     }
 }
