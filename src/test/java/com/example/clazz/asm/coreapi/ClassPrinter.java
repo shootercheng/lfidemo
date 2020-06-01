@@ -12,7 +12,7 @@ import java.io.IOException;
 import static org.objectweb.asm.Opcodes.ASM4;
 
 /**
- * 2.2.2. Parsing classe
+ * 2.2.2. Parsing class
  */
 public class ClassPrinter extends ClassVisitor {
 

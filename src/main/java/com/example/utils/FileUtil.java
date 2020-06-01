@@ -232,4 +232,15 @@ public class FileUtil {
         inputStream.read(bytes);
         return bytes;
     }
+
+    public static void writeBytesToFile(byte[] bytes, String filePath) throws IOException {
+        try (InputStream inputStream = new ByteArrayInputStream(bytes);
+             OutputStream outputStream = new FileOutputStream(filePath)) {
+            byte[] buffer = new byte[BUFFER_SIZE];
+            while (inputStream.read(buffer) != -1) {
+                outputStream.write(buffer, 0, BUFFER_SIZE);
+                outputStream.flush();
+            }
+        }
+    }
 }
