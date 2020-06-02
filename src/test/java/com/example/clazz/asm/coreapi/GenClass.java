@@ -3,6 +3,8 @@ package com.example.clazz.asm.coreapi;
 import com.example.utils.FileUtil;
 import org.junit.Test;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -38,7 +40,7 @@ public class GenClass {
         cw.visitEnd();
         byte[] bytes = cw.toByteArray();
         String filePath = "class/gen" + File.separator + "Comparable.class";
-        FileUtil.writeBytesToFile(bytes, filePath);
+        FileUtil.writeBytesToFile(bytes, filePath, FileUtil.CLASS_BUFF_SIZE);
     }
 
     @Test
@@ -47,11 +49,14 @@ public class GenClass {
         cw.visit(V1_5, ACC_PUBLIC ,
                 "pkg/HelloWorld", null, "java/lang/Object",
                 null);
-        cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "main",
-                "([Ljava/lang/String;)V", null, null).visitEnd();
+        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "main",
+                "([Ljava/lang/String;)V", null, null);
+        mv.visitInsn(Opcodes.RETURN);
+        mv.visitMaxs(2, 1);
+        mv.visitEnd();
         cw.visitEnd();
         byte[] bytes = cw.toByteArray();
         String filePath = "class/gen" + File.separator + "HelloWorld.class";
-        FileUtil.writeBytesToFile(bytes, filePath);
+        FileUtil.writeBytesToFile(bytes, filePath, FileUtil.CLASS_BUFF_SIZE);
     }
 }

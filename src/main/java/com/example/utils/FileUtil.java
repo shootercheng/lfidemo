@@ -27,6 +27,13 @@ public class FileUtil {
 
     public static final int BUFFER_SIZE = 1024;
 
+    /**
+     * 1024 256, 会报错
+     * java.lang.ClassFormatError: Extra bytes at the end of class file pkg/HelloWorld
+     * 读取字节数1字节最好
+     */
+    public static final int CLASS_BUFF_SIZE = 1;
+
     public static void findFiles(String filePath, List<File> files) {
         File file = new File(filePath);
         if (!file.exists()) {
@@ -233,12 +240,12 @@ public class FileUtil {
         return bytes;
     }
 
-    public static void writeBytesToFile(byte[] bytes, String filePath) throws IOException {
+    public static void writeBytesToFile(byte[] bytes, String filePath, int bufferSize) throws IOException {
         try (InputStream inputStream = new ByteArrayInputStream(bytes);
              OutputStream outputStream = new FileOutputStream(filePath)) {
-            byte[] buffer = new byte[BUFFER_SIZE];
+            byte[] buffer = new byte[bufferSize];
             while (inputStream.read(buffer) != -1) {
-                outputStream.write(buffer, 0, BUFFER_SIZE);
+                outputStream.write(buffer, 0, bufferSize);
                 outputStream.flush();
             }
         }
