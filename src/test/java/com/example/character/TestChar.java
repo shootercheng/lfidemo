@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream;
 public class TestChar {
 
     @Test
-    public void testILlegalChar() {
+    public void testIllegalChar() {
         char[] errorCharArr = {'\ufeff', 't', 'i', 'm', 'e'};
         char[] errorCharArrTwo = {'\uFEFF', 't', 'i', 'm', 'e'};
         String errorStr = new String(errorCharArr);
