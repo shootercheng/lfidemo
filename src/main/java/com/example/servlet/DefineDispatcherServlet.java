@@ -9,13 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- *
  * @author James
  */
-public class DispatcherServlet extends HttpServlet {
+public class DefineDispatcherServlet extends HttpServlet {
     private String disPath;
 
-    public DispatcherServlet(String disPath) {
+    public DefineDispatcherServlet(String disPath) {
         this.disPath = disPath;
     }
 

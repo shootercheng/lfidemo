@@ -29,7 +29,7 @@ public class DispatchFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String uri = httpServletRequest.getRequestURI();
         LOGGER.info("request uri {}", uri);
-        filterChain.doFilter(servletRequest, servletResponse);
+        filterChain.doFilter(httpServletRequest, servletResponse);
     }
 
     @Override
