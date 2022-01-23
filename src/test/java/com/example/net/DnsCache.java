@@ -1,15 +1,21 @@
 package com.example.net;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.client.RestTemplate;
+import sun.net.InetAddressCachePolicy;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.Security;
@@ -22,8 +28,10 @@ public class DnsCache {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Test
-    public void testDefaultCachePolicy() {
+    public void testNeverCachePolicy() throws NoSuchFieldException, IllegalAccessException, InstantiationException {
         Security.setProperty("networkaddress.cache.ttl", "0");
+        int policy = InetAddressCachePolicy.get();
+        Assert.assertEquals(InetAddressCachePolicy.NEVER, policy);
         String url = "https://www.baidu.com/";
         System.out.println(sendGetRequest(url));
         System.out.println(sendGetRequest(url));
